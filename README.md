@@ -81,4 +81,43 @@ seat_no - номер места.
  - Таблица Flights - Рейсы состоит из следющих полей:
  
 flight_id - идентификатор рейса;  
-flight_no - номер рейса
+flight_no - номер рейса;  
+scheduled_departure - время вылета по расписанию;  
+scheduled_arrival - время прилета по расписанию;  
+departure_airport - аэропорт вылета;  
+arrival_airport - аэропорт прилета;  
+status - статус рейса;  
+aircraft_code - код самолета;  
+actual_departure - фактическое время вылета;  
+actual_arrival - фактическое время прилета.  
+Индексы:  
+ PRIMARY KEY, btree (flight_id)  
+ UNIQUE CONSTRAINT, btree (flight_no, scheduled_departure)  
+Ограничения-проверки:  
+ CHECK (scheduled_arrival > scheduled_departure)  
+ CHECK ((actual_arrival IS NULL)  
+ OR ((actual_departure IS NOT NULL AND actual_arrival IS NOT NULL)  
+ AND (actual_arrival > actual_departure)))  
+ CHECK (status IN ('On Time', 'Delayed', 'Departed', 'Arrived', 'Scheduled', 'Cancelled'))  
+Ограничения внешнего ключа:  
+ FOREIGN KEY (aircraft_code) REFERENCES aircrafts(aircraft_code)  
+ FOREIGN KEY (arrival_airport) REFERENCES airports(airport_code)  
+ FOREIGN KEY (departure_airport) REFERENCES airports(airport_code)  
+Ссылки извне:  
+ TABLE "ticket_flights" FOREIGN KEY (flight_id) REFERENCES flights(flight_id)  
+
+ - Таблица Airports - Аэропорты состоит из следющих полей:
+
+airport_code - код аэропорта, 3 буквы;  
+airport_name - название аэропорта;  
+city - город аэропорта;  
+longitude - координаты аэропорта: долгота;  
+latitude - координаты аэропорта: широта;  
+timezone - временная зона аэропорта.  
+Индексы:  
+ PRIMARY KEY, btree (airport_code)  
+Ссылки извне:  
+ TABLE "flights" FOREIGN KEY (arrival_airport) REFERENCES airports(airport_code)  
+ TABLE "flights" FOREIGN KEY (departure_airport) REFERENCES airports(airport_code)  
+ 
+  - Таблица Aircrafts - Самолеты состоит из следющих полей:
