@@ -21,7 +21,7 @@
 - Routes
 
 ### 4. Развернутый анализ БД.
-- Таблица Bookings - Бронирования состоит из следющих полей:
+- Таблица Bookings - Бронирования состоит из следующих полей:
 
 book_ref - номер бронирования, комбинация 6 букв и цифр;  
 book_date - дата бронирования, максимум за месяц до рейса;  
@@ -32,7 +32,7 @@ total_amount - полная сумма бронирования, хранит о
 Ссылки извне:  
  TABLE "tickets" FOREIGN KEY (book_ref) REFERENCES bookings(book_ref)  
 
-- Таблица Tickets - Билеты состоит из следющих полей:
+- Таблица Tickets - Билеты состоит из следующих полей:
 
 ticket_no - номер билета, 13 цифр;  
 book_ref - номер бронирования;  
@@ -47,7 +47,7 @@ contact_data - контактнае данные пассажира.
 Ссылки извне:  
  TABLE "ticket_flights" FOREIGN KEY (ticket_no) REFERENCES tickets(ticket_no)  
  
- - Таблица Ticket_flight - Связь билета с рейсом состоит из следющих полей:
+ - Таблица Ticket_flight - Связь билета с рейсом состоит из следующих полей:
 
 ticket_no - номер билета;  
 flight_id - идентификатор рейса;  
@@ -65,7 +65,7 @@ amount - стоимость перелета.
 Ссылки извне:  
  TABLE "boarding_passes" FOREIGN KEY (ticket_no, flight_id) REFERENCES ticket_flights(ticket_no, flight_id)
  
-  - Таблица Boarding_passes - Посадочные талоны состоит из следющих полей:
+  - Таблица Boarding_passes - Посадочные талоны состоит из следующих полей:
 
 ticket_no - номер билета;  
 flight_id - идентификатор рейса;  
@@ -79,7 +79,7 @@ seat_no - номер места.
  FOREIGN KEY (ticket_no, flight_id)  
  REFERENCES ticket_flights(ticket_no, flight_id)  
  
- - Таблица Flights - Рейсы состоит из следющих полей:
+ - Таблица Flights - Рейсы состоит из следующих полей:
  
 flight_id - идентификатор рейса;  
 flight_no - номер рейса;  
@@ -107,7 +107,7 @@ actual_arrival - фактическое время прилета.
 Ссылки извне:  
  TABLE "ticket_flights" FOREIGN KEY (flight_id) REFERENCES flights(flight_id)  
 
- - Таблица Airports - Аэропорты состоит из следющих полей:
+ - Таблица Airports - Аэропорты состоит из следующих полей:
 
 airport_code - код аэропорта, 3 буквы;  
 airport_name - название аэропорта;  
@@ -121,7 +121,7 @@ timezone - временная зона аэропорта.
  TABLE "flights" FOREIGN KEY (arrival_airport) REFERENCES airports(airport_code)  
  TABLE "flights" FOREIGN KEY (departure_airport) REFERENCES airports(airport_code)  
  
-  - Таблица Aircrafts - Самолеты состоит из следющих полей:
+  - Таблица Aircrafts - Самолеты состоит из следующих полей:
 
 aircraft_code - код самолета;  
 model - модель самолета;  
@@ -134,7 +134,7 @@ range - максимальная дата самолета в км.
  TABLE "flights" FOREIGN KEY (aircraft_code) REFERENCES aircrafts(aircraft_code)  
  TABLE "seats" FOREIGN KEY (aircraft_code) REFERENCES aircrafts(aircraft_code) ON DELETE CASCADE
  
- - Таблица Seats - Места состоит из следющих полей:
+ - Таблица Seats - Места состоит из следующих полей:
 
 aircraft_code - код самолета;  
 seat_no - номер места;  
@@ -166,7 +166,7 @@ fare_conditions - класс обслуживания.
  #### Бизнес задачи, которые можно решить, используя БД.
  1. Получать рейсы с задержкой вылета для анализа причин задержек.
  2. Получать популярные рейсы, по которым можно устанавливать скидки.
- 3. Получать стоимость неиспользованных билетов.
+ 3. Получать стоимость неиспользованных билетов и пр.
  
 ### 5. Список SQL запросов для решения задач из приложения №2 ТЗ с описанием логики их выполнения
 находится в [файле](https://github.com/yukurbatova/SQL_FinalWork/blob/main/Queries.sql).
