@@ -147,4 +147,25 @@ from flights f
 join airports a on f.departure_airport = a.airport_code 
 join airports a2 on f.arrival_airport = a2.airport_code
 
+-- 9. Вычислите расстояние между аэропортами, связанными прямыми рейсами, сравните с допустимой максимальной дальностью перелетов  в самолетах, обслуживающих эти рейсы
+-- Определяю для рейса уникальные комбинации аэропорта вылета и аэропорта прилета
+select distinct 
+	a1.airport_name as "Аэропорт вылета",
+	a2.airport_name as "Аэропорт прилета",
+	-- Определяю по формуле из ТЗ расстояние между аэропортами, приводя к типу DECIMAL и округляя его до 2 знаков после запятой
+	round((acos(sind(a1.latitude) * sind(a2.latitude) + cosd(a1.latitude) * cosd(a2.latitude) * cosd(a1.longitude - a2.longitude)) * 6371)::dec, 2) as "Расстояние",
+	a."range" as "Дальность самолета",
+	case when 
+		-- Вычисляю по формуле из ТЗ расстояние между аэропортами
+		acos(sind(a1.latitude) * sind(a2.latitude) + cosd(a1.latitude) * cosd(a2.latitude) * cosd(a1.longitude - a2.longitude)) * 6371 
+		-- Сравниваю с дальностью самолета
+		>
+		a."range" 
+		then 'Не долетит'
+		else 'Долетит'
+		end as "Долетит ли самолет"
+from flights f
+join airports a1 on f.departure_airport = a1.airport_code
+join airports a2 on f.arrival_airport = a2.airport_code
+join aircrafts a on f.aircraft_code = a.aircraft_code 
 
