@@ -8,7 +8,7 @@
 БД demo состоит из 8 таблиц:
 - Bookings
 - Tickets
-- Ticket_flight
+- Ticket_flights
 - Boarding_passes
 - Flights
 - Airports
@@ -63,3 +63,22 @@ amount - стоимость перелета.
  FOREIGN KEY (ticket_no) REFERENCES tickets(ticket_no)  
 Ссылки извне:  
  TABLE "boarding_passes" FOREIGN KEY (ticket_no, flight_id) REFERENCES ticket_flights(ticket_no, flight_id)
+ 
+  - Таблица Boarding_passes - Посадочные талоны состоит из следющих полей:
+
+ticket_no - номер билета;  
+flight_id - идентификатор рейса;  
+boarding_no - номер посадочного талона;  
+seat_no - номер места.  
+Индексы:  
+ PRIMARY KEY, btree (ticket_no, flight_id)  
+ UNIQUE CONSTRAINT, btree (flight_id, boarding_no)  
+ UNIQUE CONSTRAINT, btree (flight_id, seat_no)  
+Ограничения внешнего ключа:  
+ FOREIGN KEY (ticket_no, flight_id)  
+ REFERENCES ticket_flights(ticket_no, flight_id)  
+ 
+ - Таблица Flights - Рейсы состоит из следющих полей:
+ 
+flight_id - идентификатор рейса;  
+flight_no - номер рейса
