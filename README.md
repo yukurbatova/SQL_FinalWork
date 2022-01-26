@@ -3,7 +3,8 @@
 ### 1. В работе использовался локальный тип подключения. 
 ### 2. ER - диаграмма БД:
 
-![fish](https://user-images.githubusercontent.com/72889535/151113231-b3978797-3a08-4ba5-b9e8-46d873ef2ccf.jpg)
+![ER](https://user-images.githubusercontent.com/72889535/151243724-d46f38e4-f48c-4d2d-a98a-407b592fc87d.png)
+
 ### 3. Краткое описание БД.
 БД demo состоит из 8 таблиц:
 - Bookings
