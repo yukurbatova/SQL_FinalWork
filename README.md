@@ -144,3 +144,8 @@ fare_conditions - класс обслуживания.
  CHECK (fare_conditions IN ('Economy', 'Comfort', 'Business'))  
 Ограничения внешнего ключа:  
  FOREIGN KEY (aircraft_code) REFERENCES aircrafts(aircraft_code) ON DELETE CASCADE  
+ 
+ ### Бизнес задачи, которые можно решить, используя БД.
+ 1. Получать рейсы с задержкой вылета для анализа причин.
+ 2. 
+ 
