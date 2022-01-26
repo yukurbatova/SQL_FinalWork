@@ -145,6 +145,23 @@ fare_conditions - класс обслуживания.
 Ограничения внешнего ключа:  
  FOREIGN KEY (aircraft_code) REFERENCES aircrafts(aircraft_code) ON DELETE CASCADE  
  
+  - Представление Flights_v создано над таблицей Flights и содержит дополнительную информацию:
+
+расшифровку данных об аэропорте вылета
+(departure_airport, departure_airport_name, departure_city),
+расшифровку данных об аэропорте прибытия
+(arrival_airport, arrival_airport_name, arrival_city),
+местное время вылета
+(scheduled_departure_local, actual_departure_local),
+местное время прибытия
+(scheduled_arrival_local, actual_arrival_local),
+продолжительность полета
+(scheduled_duration, actual_duration).
+
+- Материализованное представление Routes создано над таблицей Flights и содержит информацию о маршруте (номер рейса, аэропорты отправления и назначения), которая не зависит
+от конкретных дат рейсов.
+
+ 
  ### Бизнес задачи, которые можно решить, используя БД.
  1. Получать рейсы с задержкой вылета для анализа причин задержек.
  2. Получать популярные маршруты, по которым можно устанавливать скидки.
