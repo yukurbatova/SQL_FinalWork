@@ -107,36 +107,38 @@ group by a.model;
 
 --7. Были ли города, в которые можно  добраться бизнес - классом дешевле, чем эконом-классом в рамках перелета?
 	
-	select * from ticket_flights
-	
-	with eco_busi as (
-	with prices as (select tf.flight_id, tf.fare_conditions, min(tf.amount) min, max(tf.amount) max
-	from ticket_flights tf
-	group by tf.flight_id, tf.fare_conditions 
-		having tf.fare_conditions in ('Business', 'Economy') --and min(tf.amount) < max(tf.amount)
-	order by tf.flight_id)
-	select 
-		p.flight_id,
-		min(p.b_min_amount),
-		max(p.e_max_amount)
-	from prices p
-		group by p.flight_id
-	having min(p.b_min_amount) < max(p.e_max_amount)
-	)
-	
+-- В СТЕ определяю для каждого рейса минимальную стоимлсть бизнес-класса и максимальную стоимость эконом-класса
+with p1 as(
+select  
+			f.flight_id,
+			case when tf.fare_conditions = 'Business' then min(tf.amount) end business_min_amount,
+			case when tf.fare_conditions = 'Economy' then max(tf.amount) end economy_max_amount
+from ticket_flights tf
+join flights f on tf.flight_id = f.flight_id
+group by f.flight_id, tf.fare_conditions
+), 
+-- В СТЕ объединяю для рейса в одну строку минимальную стоимлсть бизнес-класса и максимальную стоимость эконом-класса,
+-- отфильтровываю рейсы, для которых стоимость бизнес-класса дешевле стоимости эконом-класса
+p2 as (
 select 
-	e.flight_id,
-	a.city depatrure_city,
-	a2.city arrival_city
-from eco_busi e 
-join flights f on e.flight_id = f.flight_id 
-join airports a on f.departure_airport = a.airport_code
-join airports a2 on f.arrival_airport = a2.airport_code
+		p1.flight_id,
+		min(p1.business_min_amount),
+		max(p1.economy_max_amount)
+from p1
+group by p1.flight_id
+having min(p1.business_min_amount) < max(p1.economy_max_amount)
+)
+select 	a.city as "Город прибытия"
+from p2
+join flights f on p2.flight_id = f.flight_id
+--объединяю таблицу Рейсы с таблицей Аэропорты, чтобы определить город прилета
+join airports a on f.arrival_airport = a.airport_code;
 
-	
-	--Города, между которыми нет прямых рейсов
-	select a.city departure_city,  a2.city arrival_city
-	from airports a cross join airports a2 where a.city <> a2.city 
+--8. Между какими городами нет прямых рейсов?
+select a.city departure_city,  a2.city arrival_city
+from airports a 
+cross join airports a2 
+where a.city <> a2.city 
 except 
 select a.city, a2.city 
 from flights f 
