@@ -121,3 +121,26 @@ timezone - временная зона аэропорта.
  TABLE "flights" FOREIGN KEY (departure_airport) REFERENCES airports(airport_code)  
  
   - Таблица Aircrafts - Самолеты состоит из следющих полей:
+
+aircraft_code - код самолета;  
+model - модель самолета;  
+range - максимальная дата самолета в км.  
+Индексы:  
+ PRIMARY KEY, btree (aircraft_code)  
+Ограничения-проверки:  
+ CHECK (range > 0)  
+Ссылки извне:  
+ TABLE "flights" FOREIGN KEY (aircraft_code) REFERENCES aircrafts(aircraft_code)  
+ TABLE "seats" FOREIGN KEY (aircraft_code) REFERENCES aircrafts(aircraft_code) ON DELETE CASCADE
+ 
+ - Таблица Seats - Места состоит из следющих полей:
+
+aircraft_code - код самолета;  
+seat_no - номер места;  
+fare_conditions - класс обслуживания.  
+Индексы:  
+ PRIMARY KEY, btree (aircraft_code, seat_no)  
+Ограничения-проверки:  
+ CHECK (fare_conditions IN ('Economy', 'Comfort', 'Business'))  
+Ограничения внешнего ключа:  
+ FOREIGN KEY (aircraft_code) REFERENCES aircrafts(aircraft_code) ON DELETE CASCADE  
