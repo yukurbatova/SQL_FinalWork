@@ -87,7 +87,7 @@ select
 	ts.total_seats - os.occupied_seats as "Свободные места по рейсу", 
 	round((ts.total_seats - os.occupied_seats) / ts.total_seats :: dec, 2) * 100 as "% соотношение к общему числу мест",
 	-- для подсчета накопительного итога в оконной функции с разделением по аэропорту вылета и времени вылета, 
-	--приведенному к дате, определяется количество занятых мест (=количеству пассажиров) 
+	--приведенному к дате, определяю количество занятых мест (=количеству пассажиров) 
 	sum(os.occupied_seats) over (partition by (os.departure_airport, os.actual_departure::date)
 order by os.actual_departure) as "Накопительно по пассажирам"
 from occupied_seats_by_aircraft os
